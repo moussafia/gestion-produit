@@ -17,6 +17,7 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
+
     @GetMapping("/index")
     public String index(Model model) {
         List<Product>  products = productRepository.findAll();
@@ -28,22 +29,27 @@ public class ProductController {
     public String home() {
         return "redirect:/index";
     }
-    @GetMapping("/delete")
+    @GetMapping("/admin/delete")
     public String delete(@RequestParam(name = "id") Long id) {
         productRepository.deleteById(id);
         return "redirect:/index";
     }
 
-    @GetMapping("/newProduct")
+    @GetMapping("/admin/newProduct")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
-        return "newProduct";
+        return "admin/newProduct";
     }
 
-    @PostMapping("/saveProduct")
+    @PostMapping("/admin/saveProduct")
     public String saveProduct(@Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "newProduct";
         productRepository.save(product);
         return "redirect:/index";
+    }
+
+    @GetMapping("/notAuthorized")
+    public String notAuthorized(){
+        return "notAuthorized";
     }
 }
