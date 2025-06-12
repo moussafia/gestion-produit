@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class GestionProduitApplication {
 
 	public static void main(String[] args) {
