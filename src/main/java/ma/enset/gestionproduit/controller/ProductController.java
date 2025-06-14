@@ -1,9 +1,11 @@
 package ma.enset.gestionproduit.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import ma.enset.gestionproduit.entities.Product;
 import ma.enset.gestionproduit.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,8 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping("/index")
+    @GetMapping("/user/index")
+    @PreAuthorize("hasRole('USER')")
     public String index(Model model) {
         List<Product>  products = productRepository.findAll();
         model.addAttribute("productList", products);
@@ -26,30 +29,52 @@ public class ProductController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('USER')")
     public String home() {
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
-    @GetMapping("/admin/delete")
+    @PostMapping("/admin/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public String delete(@RequestParam(name = "id") Long id) {
         productRepository.deleteById(id);
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
     @GetMapping("/admin/newProduct")
+    @PreAuthorize("hasRole('ADMIN')")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
         return "admin/newProduct";
     }
 
     @PostMapping("/admin/saveProduct")
+    @PreAuthorize("hasRole('ADMIN')")
     public String saveProduct(@Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) return "newProduct";
         productRepository.save(product);
-        return "redirect:/index";
+        return "redirect:/user/index";
     }
 
     @GetMapping("/notAuthorized")
     public String notAuthorized(){
         return "notAuthorized";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "login";
+    }
+
+    @GetMapping("/searchProduct")
+    public String searchProduct(@RequestParam("keyword") String keyword,Model model){
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
+        model.addAttribute("productList", products);
+        return "products";
     }
 }
