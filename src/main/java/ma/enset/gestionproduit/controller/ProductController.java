@@ -44,7 +44,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public String newProduct(Model model) {
         model.addAttribute("product", new Product());
-        return "admin/newProduct";
+        return "newProduct";
     }
 
     @PostMapping("/admin/saveProduct")
@@ -76,5 +76,12 @@ public class ProductController {
         List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
         model.addAttribute("productList", products);
         return "products";
+    }
+
+    @GetMapping("/admin/edit")
+    public String editProduct(@RequestParam("id") Long id,Model model){
+        Product product = productRepository.findById(id).get();
+        model.addAttribute("product", product);
+        return "newProduct";
     }
 }
