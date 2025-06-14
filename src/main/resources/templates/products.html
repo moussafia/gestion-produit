@@ -26,7 +26,7 @@
                 <td th:text="${p.name}"></td>
                 <td th:text="${p.price}"></td>
                 <td th:text="${p.quantity}"></td>
-                <td sec:authorize="hasRole('ADMIN')" class="d-flex justify-content-center align-items-center gap-4">
+                <td sec:authorize="hasRole('ADMIN')" class="d-flex gap-4">
                    <a type="submit" class="btn btn-primary" th:href="@{/admin/edit(id=${p.id})}"
                     >Edit</a>
                     <form method="post" th:action="@{/admin/delete(id=${p.id})}">
