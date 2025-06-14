@@ -79,6 +79,7 @@ public class ProductController {
     }
 
     @GetMapping("/admin/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editProduct(@RequestParam("id") Long id,Model model){
         Product product = productRepository.findById(id).get();
         model.addAttribute("product", product);

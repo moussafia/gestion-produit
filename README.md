@@ -1,1 +1,3 @@
 # gestion-produit
+Ce projet consiste à réaliser une application CRUD simple, avec une fonctionnalité de recherche, une authentification et une gestion des habilitations basée sur des rôles tels que ADMIN et USER.
+L’objectif est de pratiquer l'utilisation de Spring Boot, Spring Security et Thymeleaf, tout en appliquant l'architecture MVC et les bonnes pratiques de développement avec Spring Boot et Spring Security
